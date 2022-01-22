@@ -11,7 +11,7 @@ This repository contains my personal notes for each topic covered by CS2109S. **
 | **Week** | **Content**                                |
 |:--------:|--------------------------------------------|
 | 1        | [Introduction to Artificial Intelligence](https://github.com/jontmy/nus-cs2109s/blob/master/src/01.md) |
-| 2        | Uninformed Search                          |
+| 2        | [Uninformed Search](https://github.com/jontmy/nus-cs2109s/blob/master/src/02.md)                          |
 | 3        | Informed Search                            |
 | 4        | Adversarial Search                         |
 | 5        | Introduction to Machine Learning           |
