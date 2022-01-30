@@ -1,0 +1,87 @@
+\documentclass{article}
+
+\usepackage{amssymb}
+\usepackage{titlesec}
+\usepackage{cancel}
+\usepackage{enumerate}
+\usepackage{multirow} % row merging in tables
+
+\usepackage[utf8]{inputenc}
+\usepackage[fleqn]{amsmath}
+\usepackage{mathtools} % prettier set notation
+
+\usepackage{multicol} % double column pages or more
+\setlength\columnsep{20pt} % the default columnsep for all pages
+
+\usepackage{bm} % bold and italicize math
+\usepackage[none]{hyphenat} % no line breaking on words
+\usepackage[thinlines]{easytable} % better tables with row spacing
+
+% Better tables
+\usepackage{tabularx}
+\renewcommand{\arraystretch}{1.25}
+
+% Better code formatting
+\usepackage{listings}
+\newcommand{\code}[1]{\texttt{#1}}
+
+\usepackage{geometry}
+\geometry{a4paper, portrait, margin=0.75in}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{CS2109S --- Introduction to Artificial Intelligence and Machine Learning}
+\rhead{Page \thepage}
+\setlength{\headheight}{2em}
+\renewcommand{\headrulewidth}{2pt}
+
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
+\renewcommand{\labelenumiii}{\theenumiii}
+\renewcommand{\theenumiii}{\theenumii\arabic{enumiii}.}
+
+\linespread{1.2}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{1em}
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\belowdisplayskip}{0pt}
+\setlength{\abovedisplayshortskip}{0pt}
+\setlength{\belowdisplayshortskip}{0pt}
+\setlength{\mathindent}{0pt} % no indent for all math (including the align) environemnts
+
+% \titlespacing\part{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+% \titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{4pt plus 2pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{4pt plus 2pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+\usepackage{etoolbox}
+\newcommand{\zerodisplayskips}{%
+  \setlength{\abovedisplayskip}{0pt}%
+  \setlength{\belowdisplayskip}{0pt}%
+  \setlength{\abovedisplayshortskip}{0pt}%
+  \setlength{\belowdisplayshortskip}{0pt}}
+\appto{\normalsize}{\zerodisplayskips}
+\appto{\small}{\zerodisplayskips}
+\appto{\footnotesize}{\zerodisplayskips}
+
+% Remove vertical spacing around verbatim
+\makeatletter
+\preto{\@verbatim}{\topsep=-4pt \partopsep=0pt }
+\makeatother
+
+% Horizontal lines across a page
+\newcommand{\pageline}[1]{\par\noindent\rule{\textwidth}{#1}}
+
+\title{\textbf{CS2109S \\[0.25em] Introduction to Artificial Intelligence \\ and Machine Learning} \\[2em] \Large Notes for AY2021/22 Semester 2 \\[1em]}
+\author{Created by Jonathan Tay}
+\date{Last updated on \today}
+
+\begin{document}
+    \maketitle
+    \pageline{1.5pt}
+    \tableofcontents
+    \newpage
+
+    \input{03.tex}
+\end{document}
