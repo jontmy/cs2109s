@@ -65,7 +65,7 @@
             This algorithm is not perfect, however. On very hard problems, SMA* can switch back and forth between alternative paths, each time running out of memory and repeatedly regenerating the same nodes.
 
         \subsection{Formulating Heuristics}
-            \emph{A search algorithm using a more efficient heuristic will never expand more nodes than with a less efficient heuristic.}
+            \emph{A search algorithm using a more efficient heuristic will never expand more nodes than one with a less efficient heuristic.}
 
             Given two admissible heuristics, $h_1(n)$ and $h_2(n)$, $h_2$ \textbf{dominates} $h_1$, if for any node $n$, $h_2(n) \ge h_1(n)$.
 
@@ -81,5 +81,47 @@
             Inadmissible heuristics may overestimate costs, risk missing the optimal solution, but if they are more accurate, they can lead to fewer nodes explored.
 
             This is especially useful when the state-space is large, and optimality is not a requirement.
+
+    \section{Local Search}
+        \textbf{Local search} algorithms search unsystematically from an initial state to its neighbors \emph{without keeping track of paths and previous states}.
+
+        They are useful in \textbf{optimization problems} where finding the best possible state is important, and the path to get there is irrevelant.
+
+        \subsection{Hill-climbing Search}
+            On each iteration, \textbf{hill-climbing search} keeps track of one current state, and moves to the neighboring state with the \textbf{steepest ascent}.
+
+            It does not look beyond neighboring states, terminating at a peak, which means it can get stuck on \textbf{local maxima} and \textbf{plateaus}.
+
+            A solution to plateaus is allowing \textbf{sideways movement}, while also restricting the number of these moves so that the algorithm does not wander the plateau forever.
+
+            When there are many successors to any given state, choosing the \textbf{first-better-choice} is preferable. Another variant is \textbf{stochastic hill climbing}, which chooses a better successor randomly.
+
+        \subsection{Simulated Annealing}
+            Hill-climbing algorithms get stuck on \textbf{local maxima} since they never make downhill moves, while \textbf{random walk} algorithms will eventually reach the global maxima, albeit inefficiently.
+
+            By combining the two, doing something random once in a while allows for breaking out of local maxima, \emph{while yielding both efficiency and completeness}.
+
+            Simulated annealing algorithms pick a random move each iteration, accepting it if it improves the situation. Otherwise, it is accepted with a probability inversely and exponentially proportional to its "badness".
+
+            Also, simulated annealing algorithms become less likely to accept bad moves as time goes on. \emph{With enough time, it will find a global maxima with probability approaching 1}.
+
+        \subsection{Beam Search}
+            Rather than just keeping one node in memory, \textbf{beam search} performs $k$ hill-climbing searches in parallel.
+
+            In \textbf{local beam search}, information can be shared between parallel search threads, allowing the algorithm to abandon unfruitful searches.
+
+            However, this means that all $k$ states may end up clustered together in the state space, effectively making it a $k$-times slower hill-climbing search. To combat this, \textbf{stochastic beam search} randomly chooses successors independently instead.
+
+        \subsection{Genetic Algorithms}
+            In \textbf{genetic algorithms}, successor states are generated from a \textbf{recombination} of two parent states at random \textbf{crossover points}, and \textbf{random mutations} are allowed.
+
+            Not all successors are kept --- \textbf{selection processes} evaluate individuals with a \textbf{fitness function}, \textbf{culling} those that do not meet a fitness threshold.
+
+    \subsection{Online Search}
+        So far, the algorithms have all been for \textbf{offline search}, in which the algorithms compute a complete solution and then execute it.
+
+        \textbf{Online search}, however, interleave the computation and execution. It is useful in dynamic environments where the agent is penalized for extended computation.
+
+        It is also necessary in \textbf{exploration problems}, where the agent is clueless about the states and actions of its environment, and new observations are available only after acting.
 
 \end{multicols*}
