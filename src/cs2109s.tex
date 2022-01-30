@@ -67,7 +67,7 @@
 
 % Remove vertical spacing around verbatim
 \makeatletter
-\preto{\@verbatim}{\topsep=-4pt \partopsep=0pt }
+\preto{\@verbatim}{\topsep=-4pt \partopsep=0pt}
 \makeatother
 
 % Horizontal lines across a page
@@ -80,8 +80,10 @@
 \begin{document}
     \maketitle
     \pageline{1.5pt}
+    \renewcommand{\baselinestretch}{0.75}\normalsize
     \tableofcontents
     \newpage
+    \renewcommand{\baselinestretch}{1.0}\normalsize
 
     \input{03.tex}
 \end{document}
