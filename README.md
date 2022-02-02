@@ -6,23 +6,29 @@
 
 This repository contains my personal notes for each topic covered by CS2109S. **Tutorials, problem sets, and module content in general will *not* be uploaded here.**
 
+## Links ##
+
+The compiled LaTeX document for week 3 and onward can be found [here](https://github.com/jontmy/nus-cs2109s/blob/master/src/cs2109s.pdf).
+
+Notes for [week 1](https://github.com/jontmy/nus-cs2109s/blob/master/src/01.md) and [week 2](https://github.com/jontmy/nus-cs2109s/blob/master/src/02.md) will be re-written in LaTeX and merged into the main document in future.
+
 ## Schedule ##
 
-| **Week** | **Content**                                |
-|:--------:|--------------------------------------------|
-| 1        | [Introduction to Artificial Intelligence](https://github.com/jontmy/nus-cs2109s/blob/master/src/01.md) |
-| 2        | [Uninformed Search](https://github.com/jontmy/nus-cs2109s/blob/master/src/02.md)                          |
-| 3        | [Informed Search](https://github.com/jontmy/nus-cs2109s/blob/master/src/cs2109s.pdf)                            |
-| 4        | Adversarial Search                         |
-| 5        | Introduction to Machine Learning           |
-| 6        | Multi-variable Linear Regression           |
-| 7        | —                                          |
-| 8        | Classification: Logistic Regression        |
-| 9        | Introduction to Neural Networks            |
-| 10       | Back Propagation                           |
-| 11       | More Neural Networks                       |
-| 12       | Unsupervised Learning                      |
-| 13       | AI and Ethics                              |
+| **Week** | **Content**                                | **Status** |
+|:--------:|--------------------------------------------|:----------:|
+| 1        | Introduction to Artificial Intelligence    | ✓          |
+| 2        | Uninformed Search                          | ✓          |
+| 3        | Informed Search                            | ✓          |
+| 4        | Adversarial Search                         | ✓          |
+| 5        | Introduction to Machine Learning           |            |
+| 6        | Multi-variable Linear Regression           |            |
+| 7        | —                                          |            |
+| 8        | Classification: Logistic Regression        |            |
+| 9        | Introduction to Neural Networks            |            |
+| 10       | Back Propagation                           |            |
+| 11       | More Neural Networks                       |            |
+| 12       | Unsupervised Learning                      |            |
+| 13       | AI and Ethics                              |            |
 
 ## Additional Resources ##
 
