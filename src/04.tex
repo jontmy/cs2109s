@@ -1,0 +1,69 @@
+\section{Adversarial Search}
+    \textbf{Adversarial search} problems arise from \textbf{competitive environments} wherein two or more agents have conflicting goals, such as in games.
+
+    Even if we could specify every possible reply to an opponent's move, it is often computationally intractable to do so.
+    For this topic, we will only consider two-player games.
+
+    \subsection{Two-player Games}
+        In two-player games, \textbf{\quoted{move}} is a synonym for \quoted{action}, and \textbf{\quoted{position}} is a synonym for \quoted{state}.
+
+        A \textbf{ply} is used to mean a move by one player, increasing the depth of the \textbf{search tree} by one. This disambiguation is useful in games where a move means both players have acted.
+
+        Formally, games are defined with the following elements:
+        \begin{itemize}
+            \item $S_0$, the \textbf{initial state} of the game at the start.
+            \item \code{TO-MOVE($s$)}, the player whose turn it is to move in state $s$.
+            \item \code{ACTIONS($s$)}, the set of legal moves in state $s$.
+            \item \code{RESULT($s$, $a$)}, the \textbf{transition model} from $s$ to $s'$ after taking action $a$.
+            \item \code{IS-TERMINAL($s$)}, a \textbf{terminal test} whether the game is over (at \textbf{terminal states}).
+            \item \code{UTILITY($s$, $p$)}, a \textbf{utility function} returning a numeric value for player $p$ when the game ends in terminal state $s$.
+        \end{itemize}
+
+    \subsection{Minimax Search}
+        \textbf{Minimax search} is used in two-player games where one player is assigned \code{MAX} and the other \code{MIN}.
+
+        An optimal strategy can be determined by working out the \textbf{minimax value} of each state in the tree, where the players play optimally.
+
+        In every non-terminal state, \code{MAX} always seeks to maximize the minimax value, while \code{MIN} minimizes.
+
+        Minimax search is \textbf{complete} if the search tree is finite.
+
+        It is \textbf{optimal} only against an optimal player.
+
+        The \textbf{time complexity is} \bm{$O(b^m)$} since it has to explore the entire game tree depth-first. Since the game is deterministic, with depth-first exploration, it has a \textbf{space complexity of} \bm{$O(bm)$}.
+
+        \emph{However, the exponential time complexity makes it computationally intractable for complex games} such as chess, with an average game having approximately $10^{123}$ states.
+
+    \subsection{Alpha-Beta Pruning}
+        We can optimize the computation a minimax value by keeping track of the minimum and maximum value seen thus far, ignoring paths which have no effect on the outcome of the game.
+
+        By \textbf{pruning} large parts of the game tree, we will not have to examine every single state, reducing the exponent in the time complexity.
+
+        \subsubsection{Example of $\alpha$\textendash$\beta$ Pruning}
+            Consider a state $s$ in which it is \code{MAX}'s turn to choose between two actions leading to $s_A$ and $s_B$. We begin with an $\alpha$\textendash$\beta$ range of $[-\infty, +\infty]$.
+
+            At $s_A$, when it is \code{MIN}'s turn, \code{MIN} will always choose the action with the minimum minimax value. Let this value be $k$.
+
+            Now, we know that the minimax value at the root node $s$ is \emph{at least} $k$, so we can update the $\alpha$\textendash$\beta$ range to $[k, +\infty]$.
+
+            Then, we evaluate the minimax value for $s_B$. If we encounter any leaf node of $S_B$ with a minimax value \emph{less than} $k$, going down the path of $s_B$ is a poor choice, since $s_A$ guarantees a minimax score of \emph{at least} $k$.
+
+            Therefore, the optimal path for \code{MAX} at node $s$ is to go down $s_A$.
+
+            We did not have to consider the other leaf nodes of $s_B$ once we had found a leaf node of $s_B$ with value \emph{less than} $k$, allowing us to \textbf{prune} the search tree!
+
+        \subsubsection{Move Ordering}
+            \emph{The order in which states are explored affects the effectiveness of $\alpha$\textendash$\beta$ pruning.}
+
+            With perfect ordering, only $O(b^{\frac{m}{2}})$ nodes need to be examined as compared to $O(b^m)$ by minimax.
+
+            Therefore, we can \textbf{double the search depth} at best, and at worst $\alpha$\textendash$\beta$ pruning has no effect. Ultimately, \textbf{pruning does not affect the final result}.
+
+    \subsection{Resource Limits}
+        Computation time is usually limited. Eventually, we have to cut off the search when we are unable to reach all terminal states.
+
+        We therefore replace \code{IS-TERMINAL} with \code{IS-CUTOFF} with a certain depth limit, for example.
+
+        Consequently, we need a heuristic \textbf{evaluation function} \code{EVAL} which estimates the utility of a state, to replace the utility function \code{UTILITY}. Usually, it is a \textbf{weighted linear sum} of the various \textbf{features} of a state.
+
+        We can also deal with repeated states in \code{GRAPH-SEARCH} with \textbf{memoization}.
