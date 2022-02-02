@@ -72,8 +72,18 @@
 % Horizontal lines across a page
 \newcommand{\pageline}[1]{\par\noindent\rule{\textwidth}{#1}}
 
-\title{\textbf{CS2109S \\[0.25em] Introduction to Artificial Intelligence \\ and Machine Learning} \\[2em] \Large Notes for AY2021/22 Semester 2 \\[1em]}
-\author{Created by Jonathan Tay}
+% Proper double quotes
+\newcommand{\quoted}[1]{\textquotedblleft{#1}\textquotedblright}
+
+% Unordered list modifications
+\usepackage{enumitem}
+\setlist{nolistsep} % remove spacing in and around lists
+\setlist[itemize]{leftmargin=*} % remove natural first level indent
+\renewcommand{\labelitemi}{\textsc{--}} % change first level bullet to --
+
+
+\title{\textbf{CS2109S \\[0.25em] Introduction to Artificial Intelligence \\ and Machine Learning} \\[2em] \Large AY2021/22 Semester 2 \\[1em]}
+\author{Notes by Jonathan Tay}
 \date{Last updated on \today}
 
 \begin{document}
@@ -86,5 +96,6 @@
 
     \begin{multicols*}{2}
         \input{03.tex}
+        \input{04.tex}
     \end{multicols*}
 \end{document}
