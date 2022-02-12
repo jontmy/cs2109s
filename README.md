@@ -20,7 +20,7 @@ Notes for [week 1](https://github.com/jontmy/nus-cs2109s/blob/master/src/01.md) 
 | 2        | Uninformed Search                          | ✓          |
 | 3        | Informed Search                            | ✓          |
 | 4        | Adversarial Search                         | ✓          |
-| 5        | Introduction to Machine Learning           |            |
+| 5        | Introduction to Machine Learning           | ✓          |
 | 6        | Multi-variable Linear Regression           |            |
 | 7        | —                                          |            |
 | 8        | Classification: Logistic Regression        |            |

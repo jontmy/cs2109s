@@ -1,1 +1,93 @@
-\section{Introduction to Machine Learning}
+\section{Linear Regression}
+    Regression problems are one of the major classes of \textbf{supervised machine learning}.
+    In regression problems, we are given data with $m$ training examples, an input with $x$ variables (\textbf{features}), and are tasked with predicting the output variables $y$.
+
+    \textbf{Univariate linear regression} is essentially \quoted{\emph{fitting a straight line}}.
+
+    It is defined by the \textbf{hypothesis function} $h_\theta(x) = \theta_1x + \theta_0$. The $\theta_0$ and $\theta_1$ coefficients are known as \textbf{weights}.
+
+    The objective is to find the best $h_\theta$ that best fits the data well. \emph{The line that best fits is the one with weights that minimizes the cost (mean squared error)} ($L_2$ loss), \textbf{without overfitting}.
+
+    By Occam's razor, we prefer the simplest hypothesis that is consistent with the data.
+
+    \subsection{Cost Function}
+        $J(\theta_0, \theta_1) = \frac{1}{2m} \sum_{i=1}^m (h_\theta(x_i) - y_i)^2$
+
+        The \textbf{cost function} is the mean of the squared errors between the data $y_i$ and the hypothesis, as predicted by $h_\theta(x_i)$, over the $m$ training examples in the data.
+
+        For simplicity, we often use the following simplified version of the squared errors function:
+
+        $J'(\theta_1) = \sum_{i=1}^m (\theta_1 x_i - y_i)^2$
+
+        Squared error, unlike absolute error ($L_1$ loss) is differentiable everywhere, and is more amenable to mathematical optimization.
+        It also penalizes larger errors more heavily.
+
+    \subsection{Gradient Descent}
+        On a contour plot, the cost function is \textbf{convex}.
+        We can minimize error by iteratively updating the weights $\theta_0$ and $\theta_1$ in the direction of the gradient until convergence --- a method called \textbf{gradient descent}.
+
+        During each iteration, the weights $\theta_j$ are updated \textbf{simultaneously} as follows:
+
+        $\theta_j := \theta_j - \alpha \frac{\partial J(\theta_0, \theta_1, \dots)}{\partial \theta_j}$
+
+        $\implies \theta_0 := \theta_0 - \alpha \frac{1}{m} \sum_{i=1}^m \big( h_\theta(x_i) - y_i \big)$
+
+        $\implies \theta_1 := \theta_1 - \alpha \frac{1}{m} \sum_{i=1}^m \big( h_\theta(x_i) - y_i \big) \cdot x_i$
+
+        The parameter $\alpha$ is called the \textbf{learning rate}, and is always positive. Since the error is quadratic, the partial derivative will be linear, and at every step, \emph{the cost decreases at a decreasing rate toward the minimum}.
+
+        Care must be taken when choosing the learning rate.
+        \emph{It is important to choose a value that is small enough that the algorithm converges quickly, but large enough that the algorithm does not overshoot the minimum.}
+
+    \subsection{Variants of Gradient Descent}
+        The gradient descent covered earlier is known as \textbf{batch} (or deterministic) \textbf{gradient descent}.
+
+        Summing all $m$ training examples in every step (also known as an \textbf{epoch}), may be very slow when $m$ is large.
+
+        \textbf{Stochastic gradient descent} is faster, randomly sampling just one of the $m$ training examples at each step. Alternatively, \textbf{minibatch gradient descent} samples a subset of the $m$ training examples.
+
+    \subsection{Multivariable Linear Regression}
+        Regression problems are often multivariate, having more than one feature. We can extend $x$ to $n$ features with an $n$-dimensional vector.
+
+        The \textbf{hypothesis function} then becomes:
+
+        $h_\theta(x) = \theta_0x_0 + \theta_1x_1 + \cdots + \theta_nx_n = \theta^T x$
+
+        $\theta^T x$ is the dot product of the weights with the features. Since the $w_0$ term is the intercept, we can fix $x_0$ to $1$.
+
+        The \textbf{cost function} becomes:
+
+        $J(\theta) = \frac{1}{2m} \sum_{i=1}^m (h_\theta(x_i) - y_i)^2$
+
+        \textbf{Gradient descent} for multivariable linear regression is similar to the univariate case, except that the $x_i$ are now $n$-dimensional vectors:
+
+        $\theta_j := \theta_j - \alpha \frac{\partial J(\theta)}{\partial \theta_j}$
+
+        Therefore, for $n$ features,
+
+        $\theta_0 := \theta_0 - \alpha \frac{1}{m} \sum_{i=1}^m \big( h_\theta(x_i) - y_i \big) \cdot x_{0,i}$
+
+        $\theta_1 := \theta_1 - \alpha \frac{1}{m} \sum_{i=1}^m \big( h_\theta(x_i) - y_i \big) \cdot x_{1,i}$
+
+        $\vdots$
+
+        $\theta_n := \theta_n - \alpha \frac{1}{m} \sum_{i=1}^m \big( h_\theta(x_i) - y_i \big) \cdot x_{n,i}$
+
+    \subsection{Feature Scaling}
+        \textbf{Feature scaling} is a method to scale the data such that all the weights are in the same range and easily comparable. Gradient descent converges faster when this is applied.
+
+        \subsubsection{Min-max Normalization}
+            By \textbf{rescaling} the range of features to $[0, 1]$ or $[1, -1]$, we can make the weights more comparable. The general formula for a scaled value $x'$ is:
+
+            $x' = \frac{x - \min(x)}{\max(x) - \min(x)}$
+
+        \subsubsection{Mean Normalization}
+            Alternatively, by computing the mean $\mu_i$ and standard deviation $\sigma_i$ for each feature, we can \textbf{standardize} the features to have a mean of $0$ and a standard deviation of $1$.
+            The general formula for a scaled value $x'$ is:
+
+            $x' = \frac{x - \mu_i}{\sigma_i}$
+
+    \subsection{Polynomial Regression}
+        The relationship between features is not always linear.
+
+        $h_\theta(x) = \theta_0 + \theta_1 x + \theta_2 x^2 + \theta_3 x^3$ may be valid, and so may $h_\theta(x) = \theta_0 + \theta_1 x + \theta_2 \sqrt{x}$. Feature scaling will need to be done.
