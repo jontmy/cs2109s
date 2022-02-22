@@ -1,0 +1,191 @@
+\section{Uninformed Search}
+
+
+\subsection{Problem-Solving Agents}
+
+Agents may need to consider a \textbf{sequence of actions} that form a path to a goal state when the correct action is not immediately obvious.
+
+In order to do so, agents follow a four-phase problem-solving process:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Goal formulation}: Goals limit objectives and hence the actions that need to be considered.
+    \item \textbf{Problem formulation}: Describe the states and actions necessary to reach the goal.
+    \item \textbf{Search}: Derive a \textbf{solution}, which is a sequence of actions from the initial state that reaches a goal state. There may be multiple or no solutions.
+    \item \textbf{Execute}: Perform the actions in the solution.
+\end{enumerate}
+
+There are many different search problem types depending on the environment.
+
+
+\subsubsection{Single-state Problem}
+
+A deterministic, fully observable environment creates a \textbf{single-state problem} where the agent knows exactly where it will be.
+
+
+\subsubsection{Sensorless Problem}
+
+A non-observable environment creates a \textbf{sensorless/conformant problem} where the agent may have no idea where it is.
+
+
+\subsubsection{Contigency Problem}
+
+A non-deterministic, and/or partially observable environment creates a \textbf{contingency problem} where percepts provide new information about the current state.
+
+Search and execution are often interleaved.
+
+
+\subsubsection{Exploration Problem}
+
+In unknown environment, the agent may need to explore the environment to find the goal.
+
+
+\subsection{Single-state Problem Formulation}
+
+The \textbf{state space} is the set of all possible states the environment can exist in.
+
+Formally, a search problem is defined as follows:
+
+\begin{enumerate}[leftmargin=*]
+    \item The \textbf{initial state} is the state the agent starts in.
+    \item The \textbf{actions} available to the agent. Given a state $x$, the successor function $S(x)$ returns a set of \textbf{action-state pairs}.
+    \item The \textbf{goal test}, which is defined \textbf{explicitly} as a condition, or \textbf{implicitly} as a function which takes a state. \emph{For example, $\operatorname{checkmate}(x)$ is defined implicitly.}
+    \item The \textbf{path cost function} $c(x, a, x')$ which gives the additive cost of performing action $a$ in state $x$ to reach state $x'$.
+\end{enumerate}
+
+Often, we will need to abstract state spaces since the real world environment is absurdly complex, with a state space that is too huge.
+
+
+\subsection{Search Algorithms}
+
+A \textbf{search algorithm} takes a search problem as input and returns a solution or an indication of failure.
+
+\emph{In essence, a tree search simulates the exploration of the state space by generating sucessors of already-explored states, starting from the initial state.}
+
+A \textbf{state} is a representation of a physical configuation of the environment.
+
+A \textbf{node} in the search tree corresponds to a state in the state space. The \textbf{edges} of the search tree correspond to actions.
+
+\emph{As a data structure, nodes include state, parent nodes, actions, path cost, and depth.}
+
+The $expand$ function creates new nodes using the successor function to create the corresponding states.
+
+
+\subsubsection{Measuring Performance}
+
+The order of node expansion defines the \textbf{search strategy} used by a search algorithm.
+However, we first need criteria to evaluate them, and we can do so along four dimensions:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Completeness}: Is it guaranteed to find a solution if one exists? A complete algorithm must be able to explore every state reachable from the initial state.
+    \item \textbf{Time complexity}: How many nodes does it generate?
+    \item \textbf{Space complexity}: How much memory does it need to store the nodes at maximum?
+    \item \textbf{Cost optimality}: Does it always find a least-cost solution among all solutions?
+\end{enumerate}
+
+
+\subsubsection{Time and Space Complexity}
+
+In a state-space graph, theoretical algorithm analysis suggests complexity as measured based on $|V| + |E|$, where $|V|$ is the number of vertices (state nodes) and $|E|$ is the number of edges (state-action pairs).
+
+\emph{However, in many AI problems, the graph is represented implicitly by the initial state and actions.}
+
+Therefore, complexity here is measured in terms of:
+
+\begin{itemize}
+    \item $b$, the \textbf{branching factor} of the search tree,
+    \item $d$, the \textbf{depth} of the \textbf{least-cost solution}, and
+    \item $m$, the \textbf{maximum depth} of the search tree (number of actions along any path)
+\end{itemize}
+
+
+\subsection{Breadth-first Search (BFS)}
+
+In \textbf{breadth-first search}, the root node is expand first, followed by all its successors, and so on.
+
+\textbf{Early goal tests} offer a slight optimization, by performing goal tests on nodes when they are generated rather than popped (\textbf{late goal test}).
+
+\begin{itemize}
+    \item \textbf{Completeness}: Yes, if $b$ is finite.
+    \item \textbf{Time complexity}: $O(b^{d+1}) = 1 + b + b^2 + b^3 + ... + b^d$
+    \item \textbf{Space complexity}: $O(b^{d+1})$ since all nodes are stored in memory.
+    \item \textbf{Cost optimality}: Yes, if all actions have the same cost.
+\end{itemize}
+
+The space complexity of breadth-first search is a bigger problem than its time complexity.
+
+\emph{In general, exponential-complexity search problems cannot be solved by uninformed search for any but the smallest instances.}
+
+
+\subsection{Uniform-cost Search (UCS)}
+
+Also known as \textbf{Dijkstra's algorithm}, \textbf{uniform-cost search} always expands the least-cost unexpanded node.
+
+It is equivalent to breadth-first search if all action costs are equal. Most implementation use a \textbf{priority queue} ordered by path cost.
+
+Let $C*$ be the cost of the optimal solution, and $\epsilon$ be the lower bound on each action cost where $\epsilon > 0$.
+
+\begin{itemize}
+    \item \textbf{Completeness}: Yes, if all actions cost $\ge \epsilon > 0$.
+    \item \textbf{Time complexity}: $O(b^{\lceil C* / \epsilon \rceil})$
+    \item \textbf{Space complexity}: $O(b^{\lceil C* / \epsilon \rceil})$
+    \item \textbf{Cost optimality}: Yes, since nodes are expanded in order of increasing cost.
+\end{itemize}
+
+$O(b^{\lceil C* / \epsilon \rceil})$ can be worse than $O(b^d)$ since uniform-cost search can explore large trees of actions with low costs before exploring paths with a high-cost but with useful action.
+
+
+\subsection{Depth-first Search (DFS)}
+
+In \textbf{depth-first search}, the deepest node is always expanded first.
+
+\begin{itemize}
+    \item \textbf{Completeness}: Depends. Incomplete if it fails in loops (for some implementations) or infinite-depth spaces. Complete in finite spaces.
+    \item \textbf{Time complexity}: $O(bm)$
+    \item \textbf{Space complexity}: $O(m)$ with backtracking, $O(bm)$ without.
+    \item \textbf{Cost optimality}: No, since it always returns the first solution it finds.
+\end{itemize}
+
+The time complexity of $O(bm)$ can be terrible if $m$ is much larger than $d$. However, DFS can be faster than BFS if the goals are dense.
+
+
+\subsection{Depth-limited Search (DLS)}
+
+\textbf{Depth-limited search} is a variant of \textbf{depth-first search} which limits the depth of the search tree to $l$, such that all nodes at depth $l$ are treated as if they had no successors.
+
+This prevents DFS from wandering down an infinite path.
+
+\begin{itemize}
+    \item \textbf{Completeess}: No, if a poor choice of $l$ is made it will fail to arrive at a solution.
+    \item \textbf{Time complexity}: $O(bl)$
+    \item \textbf{Space complexity}: $O(bl)$
+    \item \textbf{Cost optimality}: No, since it always returns the first solution it finds.
+\end{itemize}
+
+
+\subsection{Iterative Deepening Search (IDS)}
+
+Rather than having to choose a single value for $l$ like in DLS, \textbf{iterative deepening search} tries every possible value for $l$ incrementally from zero.
+
+There is an overhead cost to doing so, but most of the nodes are in the bottom level, so repetition of the top nodes is not entirely significant.
+
+For example, for $b = 10$ and $d = 5$, DLS explores $1 + 10 + 100 + 1000 + 10000 = 11111$ nodes, while IDS explores $6 + 50 + 400 + 3,000 + 20,000 + 100,000 = 123,456$ nodes.
+
+The overhead is a mere 11\%.
+
+\begin{itemize}
+    \item \textbf{Completeness}: Yes.
+    \item \textbf{Time complexity}: $O(b^d) = (d+1)b^0 + db^1 + (d-1)b^2 + ... + b^d$
+    \item \textbf{Space complexity}: $O(bd)$
+    \item \textbf{Cost optimality}:  Yes, if the action costs are equal.
+\end{itemize}
+
+
+\subsection{Bidirectional Search}
+
+This alternative approach searches \textbf{simultaneously} from the initial state and backwards from the goal states, checking if a node appears in the other search tree.
+
+Intuitively, $2 * O(b^{\frac{d}{2}})$ is less than $O(b^d)$.
+
+Different search strategies can be employed for either half. However, $\operatorname{pred}(\operatorname{succ}(n))$ and $\operatorname{succ}(\operatorname{pred}(n))$ must be equal.
+
+\emph{As an aside, memoization should be used to handle repeated states in search algorithms.}
