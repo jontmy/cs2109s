@@ -10,7 +10,7 @@ This repository contains my personal notes for each topic covered by CS2109S. **
 
 The compiled LaTeX document for week 3 and onward can be found [here](https://github.com/jontmy/nus-cs2109s/blob/master/src/cs2109s.pdf).
 
-Notes for [week 1](https://github.com/jontmy/nus-cs2109s/blob/master/src/01.md) and [week 2](https://github.com/jontmy/nus-cs2109s/blob/master/src/02.md) will be re-written in LaTeX and merged into the main document in future.
+Notes for [week 2](https://github.com/jontmy/nus-cs2109s/blob/master/src/02.md) will be re-written in LaTeX and merged into the main document in future.
 
 ## Schedule ##
 
