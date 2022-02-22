@@ -1,0 +1,167 @@
+\section{Intelligent Agents}
+
+
+\subsection{Agents}
+
+An \textbf{agent} is anything that can perceive its \textbf{environment} through \textbf{sensors} and acting upon that environment with \textbf{actuators}.
+
+For example, humans have eyes and other organs for sensors, as well as hands, legs, and various other body parts for actuators.
+
+\textbf{Percepts} are the content that an agent's sensors perceive, and the complete history of percepts is known as the \textbf{percept sequence}.
+
+\emph{In general, an agent's choice of action at any given instant depends on its built-in knowledge and on the entire percept sequence, but not anything it has yet to perceive.}
+
+
+\subsection{Rationality}
+
+In order for an agent to know to do the right thing (through its actions),
+we measure the the \textbf{desirability} for the outcome sequence of states in the environment.
+
+This measure is known as the \textbf{performance measure}, and it encompasses several metrics:
+
+\begin{enumerate}
+    \item Whom is it best for?
+    \item What are we optimizing for?
+    \item What information is available?
+    \item What are the unintended effects?
+    \item What are the costs?
+\end{enumerate}
+
+\emph{As a general rule, it is better to design performance measures according to what one actually wants to be achieved in the environment rather than according to how one thinks the agent should behave.}
+
+For each possible percept sequence, a \textbf{rational agent} will choose the action that is expected to \textbf{maximize the performance measure}, given the evidence provided by the percept sequence and its built-in knowledge.
+
+
+\subsection{Environments}
+
+\textbf{Task environments} are the \quoted{problems} to which rational agents are \quoted{solutions}. We use the \textbf{P.E.A.S.} framework to model them as follows (with examples for autonomous driving):
+
+\begin{itemize}
+    \item \textbf{Performance measure} (safety, speed, comfort)
+    \item \textbf{Environment} (road, weather, traffic)
+    \item \textbf{Actuators} (steering, accelerator, brakes, signals)
+    \item \textbf{Sensors} (cameras, LIDAR, GPS, speedometer)
+\end{itemize}
+
+
+\subsubsection{Fully observable vs. partially observable}
+
+A \textbf{fully observable} environment is one in which an agent's sensors give it access to its \textbf{complete state} at each point in time.
+
+Environments may be \textbf{partially observable} because of noisy or inaccurate sensors - or essentially if any sensor data is missing.
+
+If the agent lacks sensors, then the environment is \textbf{unobservable}.
+
+
+\subsubsection{Single-agent vs. multi-agent}
+
+An agent in a \textbf{single-agent} environment operates by itself and does not consider other objects as agents. \textbf{Multi-agent} environments may be \textbf{competitive} or \textbf{co-operative}.
+
+
+\subsubsection{Deterministic vs. stochastic}
+
+A \textbf{deterministic} environment allows its next state to be completely determined by the current state and the action executed by the agent. Otherwise, it is \textbf{stochastic}.
+
+In multi-agent environments, if the environment is deterministic except for the actions of other agents, then it is \textbf{strategic}.
+
+
+\subsubsection{Episodes vs. sequential}
+
+In an \textbf{episodic} environment, the agent's experience is divided into atomic episodes, during which the agent receives a percept and performs a single action.
+
+The choice of action in each episode depends only on the episode itself.
+
+Otherwise, the environment is \textbf{sequential}.
+
+
+\subsubsection{Dynamic vs. static}
+
+If the environment can change while an agent is deliberating, it is \textbf{dynamic}. Otherwise, it is \textbf{static}.
+
+\emph{In a dynamic environment, when an agent has not decided on its action when asked, it counts as deciding to do nothing.}
+
+If the environment itself does not change with time but the agent's performance score does, the environment is \textbf{semi-dynamic} — an example of which is chess played with a clock.
+
+
+\subsubsection{Discrete vs. continuous}
+
+A \textbf{discrete} environment has a finite number of distinct and clearly-defined percepts and actions, while \textbf{continuous environments} do not.
+
+
+\subsection{Agent Programs}
+
+An agent's behavior is described by the \textbf{agent function} $f: P* \rightarrow A$ that maps from percept histories to actions.
+
+This agent function is implemented internally in an artificial agent by an \textbf{agent program} which runs on physical \textbf{agent architecture} to produce $f$.
+
+Summarily, agent = architecture + program, and the goal is to implement the rational agent function concisely.
+
+
+\subsubsection{Table-Lookup Agents}
+
+A \textbf{table-lookup agent} keeps track of the percept sequence, using it to index into a table of actions to decide what to do.
+
+However, drawbacks include exponential space complexity, lack of autonomy, and the duration it takes to compute table entries.
+
+Nonetheless, table-lookup agents does do what we want, assuming the table is filled in correctly, since it implements the rational agent function.
+
+
+\subsubsection{Simple Reflex Agents}
+
+The simplest kind of agents, \textbf{simple reflex agents} rely on their sensors to perceive their environment in its current state, ignoring their percept history. Then, \textbf{condition-action rules} govern the action which they perform.
+
+\emph{However, simple reflex agents perform best in fully observable environments. They are vulnerable to infinite loops when their environment is only partially observable.}
+
+
+\subsubsection{Model-based Reflex Agents}
+
+The most effective way for an agent to handle partial observability is to keep track of the part of the environment it cannot currently see.
+
+The information in this internal state has to be updated over time.
+
+First, a \textbf{transition model} is needed for the agent to understand the effects of its actions, as well as how the world evolves independently of the agent.
+
+Second, a \textbf{sensor model} represents the knowledge of how the state of the world is reflected in the agent's percepts.
+
+Together, the use of such models enables \textbf{model-based reflex agents}.
+
+
+\subsubsection{Goal-based Agents}
+
+Knowing the current state of the environment is not always sufficient for a decision.
+
+Agents may require \textbf{goal information} that describes desirable outcomes, such that the agent can choose the actions to achieve the goal.
+
+
+\subsubsection{Utility-based Agents}
+
+Goals alone are usually insufficient to generate high-quality behavior in most environments, since goals dichotomize states into favorable and disfavorable states.
+
+Rather, the use of \textbf{utility functions} by agents allows the \textbf{internalization of the performance measure}.
+
+The utility function measures the agent's preferences among states of the world, allowing the agent to choose the action that leads to the best \textbf{expected utility}.
+
+
+\subsubsection{Learning Agents}
+
+Learning allows agents to operate in initially unknown environments and to become more competent that allowed by its initial knowledge alone.
+
+A learning agent has four conceptual components:
+
+\begin{enumerate}
+    \item The \textbf{learning element}, which makes improvements.
+    \item The \textbf{performance element}, which selects external actions.
+    \item The \textbf{critic}, which provides feedback on how the agent is doing with respect to a fixed performance standard. It also determines how the performance element should be modified to do better in future.
+    \item The \textbf{problem generator}, which suggests actions for new and informative experiences, especially through \textbf{exploration}.
+\end{enumerate}
+
+
+\subsection{Exploitation vs Exploration}
+
+Agents in the real world must often choose between maximizing expected utility with its current knowledge of the world (exploitation) and learning more about the world (exploration).
+
+The performance element of a learning agent would prefer to keep doing actions that are best, given what it knows.
+
+However, if the agent is willing to explore a little and perhaps do some sub-optimal actions in the short run, it might discover much better actions for the long run.
+
+The problem generator's role is also to suggest these exploratory actions.

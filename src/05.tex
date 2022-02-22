@@ -91,3 +91,13 @@
         The relationship between features is not always linear.
 
         $h_\theta(x) = \theta_0 + \theta_1 x + \theta_2 x^2 + \theta_3 x^3$ may be valid, and so may $h_\theta(x) = \theta_0 + \theta_1 x + \theta_2 \sqrt{x}$. Feature scaling will need to be done.
+
+    \subsection{Normal Equation}
+        A matrix equation to calculate the weights, also known as the \textbf{normal equation} is:
+
+        $\theta = (X^TX)^{-1}X^TY$
+
+        This method can be used feasibly instead of gradient descent when there are few training examples
+        and features.
+
+        However, due to the $O(n^3)$ complexity of the normal equation, it is not recommended for large datasets, unlike gradient descent.
