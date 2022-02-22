@@ -81,6 +81,9 @@
 \setlist[itemize]{leftmargin=*} % remove natural first level indent
 \renewcommand{\labelitemi}{\textsc{--}} % change first level bullet to --
 
+% Remove enumerate spacing with [leftmargin=*]
+\usepackage{enumitem}
+
 
 \title{\vspace{-1cm}\textbf{CS2109S \\[0.25em] Introduction to Artificial Intelligence \\ and Machine Learning} \\[2em] \Large AY2021/22 Semester 2 \\[1em]}
 \author{Notes by Jonathan Tay}
@@ -97,6 +100,7 @@
     \newpage
     \begin{multicols*}{2}
         \input{01.tex}
+        \input{02.tex}
         \input{03.tex}
         \input{04.tex}
         \input{05.tex}
