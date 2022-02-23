@@ -140,7 +140,7 @@ In \textbf{depth-first search}, the deepest node is always expanded first.
 
 \begin{itemize}
     \item \textbf{Completeness}: Depends. Incomplete if it fails in loops (for some implementations) or infinite-depth spaces. Complete in finite spaces.
-    \item \textbf{Time complexity}: $O(bm)$
+    \item \textbf{Time complexity}: $O(b^m)$
     \item \textbf{Space complexity}: $O(m)$ with backtracking, $O(bm)$ without.
     \item \textbf{Cost optimality}: No, since it always returns the first solution it finds.
 \end{itemize}
@@ -156,7 +156,7 @@ This prevents DFS from wandering down an infinite path.
 
 \begin{itemize}
     \item \textbf{Completeness}: No, if a poor choice of $l$ is made it will fail to arrive at a solution.
-    \item \textbf{Time complexity}: $O(bl)$
+    \item \textbf{Time complexity}: $O(b^l)$
     \item \textbf{Space complexity}: $O(bl)$
     \item \textbf{Cost optimality}: No, since it always returns the first solution it finds.
 \end{itemize}
