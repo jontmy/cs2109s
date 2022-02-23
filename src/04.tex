@@ -37,6 +37,10 @@
     \subsection{Alpha-Beta Pruning}
         We can optimize the computation a minimax value by keeping track of the minimum and maximum value seen thus far, ignoring paths which have no effect on the outcome of the game.
 
+        The parameter $\alpha$ is the best (highest) value we have found along the path for \code{MAX}, and conversely, $\beta$ is the best (lowest) value for \code{MIN}.
+
+        We can think of $\alpha$ and $\beta$ as a range of values $[\alpha, \beta]$
+
         By \textbf{pruning} large parts of the game tree, we will not have to examine every single state, reducing the exponent in the time complexity.
 
         \subsubsection{Example of $\alpha$\textendash$\beta$ Pruning}
