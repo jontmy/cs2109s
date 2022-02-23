@@ -66,7 +66,7 @@
     \subsection{Formulating Heuristics}
         \emph{A search algorithm using a more efficient heuristic will never expand more nodes than one with a less efficient heuristic.}
 
-        Given two admissible heuristics, $h_1(n)$ and $h_2(n)$, $h_2$ \textbf{dominates} $h_1$, if for any node $n$, $h_2(n) \ge h_1(n)$.
+        Given two admissible heuristics, $h_1(n)$ and $h_2(n)$, $h_2$ \textbf{dominates} $h_1$, if for all nodes $n$, $h_2(n) \ge h_1(n)$.
 
         Therefore, it is better to use a heuristic with higher $h(n)$ values, since it will expand fewer nodes as long as it is consistent.
 
