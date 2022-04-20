@@ -1,0 +1,49 @@
+\section{Regularization}
+\emph{A technique to reduce the complexity of a model to reduce overfitting.}
+
+We want to keep all features in the model, and instead reduce the magnitude of the weight parameters
+$\theta_j$.
+
+\subsection{Regularized Linear Regression}
+In linear regression, the cost function 
+$J(\theta) = \frac{1}{2m} \sum_{i=1}^{m} \left(h_\theta(x^{(i)}) - y^{(i)}\right)^2$,
+i.e., the sum of squared errors.
+
+Regularization introduces adds a regularization parameter $\lambda$ to the cost function:
+
+$J(\theta) = \frac{1}{2m} \sum_{i=1}^{m} \left(h_\theta(x^{(i)}) - y^{(i)}\right)^2 
+\color{red} {+ \: \frac{\lambda}{2m} \sum_{i=1}^{n} \theta_i^2}$
+
+This makes $\theta_1, \dots, \theta_n$ smaller, effectively cancelling out higher order terms in
+the polynomial $y = \theta_0 + \theta_1 x + \theta_2 x^2 + \dots + \theta_n x^n$.
+
+Gradient descent just has an extra term in the update rule:
+$\theta_n := \textcolor{red}{\left( 1 - \frac{\alpha\lambda}{m}  \right)} \: \theta_n 
+- \alpha \frac{1}{m} \sum_{i=1}^{m} \left( h_\theta(x^{(i)}) - y^{(i)} \right) x_n^{(i)}$
+
+The normal equation also has the $\lambda$ term added to it:
+$\theta = (X^TX \textcolor{red}{\:+\:\lambda D})^{-1} X^TY$, where $D = I$ but with $D_{11} = 0$.
+
+Unlike the regular normal equation where $X^TX$ must be invertible,
+the regularized normal equation can be solved even if $X^TX$ is not invertible
+as long as $\lambda > 0$!
+
+\subsection{Regularized Logistic Regression}
+The fully expanded cost function has the following form:\\[-0.2em]
+\begin{align*}
+    J(\theta) = 
+    -\frac{1}{m} \sum_{i=1}^{m} \left(
+        y^{(i)} \log h_\theta(x^{(i)}) +
+        (1 - y^{(i)}) \log\left(1 - h_\theta(x^{(i)}) \right)
+    \right)
+\end{align*}
+
+Regularization appends the following to the back:
+
+$\dots \textcolor{red}{+ \frac{\lambda}{2m} \sum_{i=1}^{n} \theta_i^2}$
+
+Gradient descent also has an extra term in the update rule:
+
+$\theta_n := \theta_n - \alpha \frac{1}{m} \sum_{i=1}^{m} 
+    \left( h_\theta(x^{(i)}) - y^{(i)} \right) x_n^{(i)}
+    \textcolor{red}{- \frac{\lambda}{m} \theta_n}$

@@ -1,5 +1,6 @@
 .DS_Store
 src/__latexindent_temp.tex
+lectures/
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

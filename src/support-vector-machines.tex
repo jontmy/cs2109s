@@ -1,0 +1,54 @@
+\section{Support-vector Machine (SVM)}
+\emph{A technique to effeciently perform non-linear classification, in addition to linear classification.}
+
+The cost function for an SVM, $J(\theta) = $\\[-0.4em]
+\begin{align*}
+    \frac{1}{m} \sum_{i=1}^{m} \left(
+        y^{(i)} \operatorname{cost}_1 \! \left( \theta^T x \right) +
+        (1 - y^{(i)}) \operatorname{cost}_0 \! \left( \theta^T x \right) \right) +
+        \frac{\lambda}{2m} \sum_{i=1}^{n} \theta_i^2
+\end{align*}
+
+where $\operatorname{cost}_1 \! \left( \theta^Tx \right)$ is some linear approximation
+of the non-linear $\log h_\theta$ term for values $\leq 1$, and 0 otherwise.
+
+$\operatorname{cost}_0 \! \left( \theta^Tx \right)$ is some linear approximation
+of the non-linear $\log h_\theta$ term for values $\geq -1$, and 0 otherwise.
+
+The hypothesis for an SVM is more clean-cut than logistic regression:\\[-0.2em]
+\[ h_\theta(x) = \begin{cases}
+    1 & \text{if } \theta^T x > 0 \\
+    0 & \text{otherwise}
+\end{cases} \]
+
+Minimization of the cost function (where $C \approx \frac{1}{\lambda}$):\\[-0.2em]
+\begin{align*}
+\min_{\theta} C \left[\textcolor{red}{
+    \sum_{i=1}^{m} y^{(i)} \operatorname{cost}_1 \! \left( \theta^T x \right) +
+    (1 - y^{(i)}) \operatorname{cost}_0 \! \left( \theta^T x \right)
+    }\right]
++ \textcolor{blue}{\frac{1}{2} \sum_{i=1}^{n} \theta_i^2}
+\end{align*}
+
+Therefore, we simplify SVMs as $C\textcolor{red}{A} + \textcolor{blue}{B}$,
+while logistic regression is $\textcolor{red}{A} + \lambda \textcolor{blue}{B}$.
+They are relatively similar!
+
+This minimization works because $\theta^Tx^{(i)} \geq 1$ if $y = 1$,
+and $\theta^Tx^{(i)} \leq -1$ if $y = 0$. As a result, the costs from
+ $\operatorname{cost}_1$ and $\operatorname{cost}_0$ are minimized.
+
+SVMs construct a \textbf{maximum margin separator}, which is a decision boundary with the
+largest possible distance to each training example.
+
+A large $\lambda$ value ignores outliers, and since $C \approx \frac{1}{\lambda}$,
+a small $C$ value ignores outliers in SVMs. We need to ignore some outliers and allow
+misclassifications, otherwise, the \textbf{margins} of the decision boundary will be too small.
+
+Ultimately, only the support vectors---the points closest to the separator---matter.
+All the weights for non support vectors are zero.
+
+\subsection{Kernel Tricks}
+retnfsiwugirw
+
+effsfgrgsnj

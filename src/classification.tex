@@ -1,0 +1,138 @@
+\section{Classification}
+\emph{The problem of identifying which set of categories a data point belongs to.}
+\subsection{Decision Trees (DT)}
+\emph{A representation of a function that maps a vector of attribute values to a single output value.}
+
+We construct a decision tree for \textbf{boolean classification} from inputs of \emph{discrete values}
+for outputs which are either \code{true} (\textbf{positive example}) or \code{false} (\textbf{negative example}).
+
+We want to find the \emph{most compact} decision tree.
+However, it is computationally intractable to construct all $2^{2^n}$ distinct decision trees
+with $n$ Boolean attributes.
+
+There are a total of $3n$ distinct \textbf{conjunctive hypotheses} where each attribute in $n$
+is either \emph{in (positive)}, \emph{in (negative)}, or \emph{out}.
+
+A more expressive \textbf{hypothesis space} increases the chance that the target function can be expressed
+and also increases the number of hypotheses consistent with the training set.
+
+\subsubsection{Entropy}
+\emph{The measure of uncertainty inherent to a variable's possible outcomes.}
+
+$I(P(v_1), \dots, P(v_n)) = -\sum_{i=1}^{n} P(v_i) \log_{2}P(v_i)$
+
+For a training set of $p$ positive examples and $n$ negative examples:
+
+$I\left( \frac{p}{p+n}, \frac{n}{p+n} \right) =
+\left( -\frac{p}{p+n} \log_{2}\frac{p}{p+n} \right) - 
+\left( \frac{n}{p+n} \log_{2}\frac{n}{p+n} \right)$
+
+\subsubsection{Information Gain (IG)}
+\emph{The expected reduction in entropy.}
+
+A chosen attribute $A$ divides the training set $E$ into subsets $E_1, \dots, E_v$ according to
+their values for $A$, where $A$ has $v$ distinct values:
+
+$\operatorname{remainder}(A) = \sum_{i=1}^{v} \frac{p_i + n_i}{p + n} \cdot I\left( 
+\frac{p_i}{p_i + n_i}, \frac{n_i}{p_i + n_i} \right)$
+
+We then measure the reduction in entropy:
+
+$IG(A) =I\left( \frac{p}{p+n}, \frac{n}{p+n} \right) - \operatorname{remainder}(A)$
+
+We prefer to split on attributes with the highest IG.
+
+\subsubsection{Decision Tree Pruning}
+\emph{Prevent overfitting by preventing splits that do not separate training examples cleanly.}
+
+One method is \textbf{early stopping}, which stops generating nodes when there are no good attributes
+to split on.
+
+Alternatively, we can use statistical techniques to determine whether the attribute is relevant.
+
+This results in smaller trees with better accuracy.
+
+\subsubsection{Broadening the Applicability of DTs}
+If some examples are \emph{missing values} for $A$, we can still use the training examples for the DT.
+If a node tests $A$, we assign the most common value of $A$ with the same output value.
+
+If some attributes have continuous values, it may suffice to use a \textbf{split point} inequality test
+using some threshold or interval.
+
+However, if these continuous values do not have meaningful ordering, we can use \textbf{information gain ratio} instead:
+
+$\operatorname{SplitInformation}(C, A) = -\sum_{i=1}^{d} \frac{|E_i|}{|E|} \log_2 \frac{|E_i|}{|E|}$
+
+$\operatorname{GainRatio}(C, A) = \frac{IG(C, A)}{\operatorname{SplitInformation}(C, A)}$, where
+
+$E_1, \dots, E_d$ are the subsets of the training set $E$ divided by the attribute $A$.
+
+Alternatively, \textbf{equality tests} can be used to separate specific values from the rest.
+
+If some attributes have \emph{differing costs}, we can replace $IG$ with 
+$\frac{IG^2(C, A)}{\operatorname{Cost}(A)}$ or $\frac{2^{IG(C, A)} - 1}{(\operatorname{Cost}(A) + 1)^w}$
+where $w \in [0, 1]$ determines the importance of the cost.
+
+\subsection{Logistic Regression}
+A \textbf{decision boundary} is a line (or hyperplane in higher dimensions) which separates two classes.
+
+A linear decision boundary is called a \textbf{linear separator} and data that admit such a separator 
+are called \textbf{linearly separable}.
+
+In linear regression, we used a \textbf{threshold function} to separate the classes:\\[-0.2em]
+\[ h_\theta(x_1, x_2) =
+    \begin{cases}
+        1 \text{ (positive class) } & \text{if } \theta_0 + \theta_1 x_1 + \theta_2 x_2 > 0 \\
+        0 \text{ (negative class)  }& \text{otherwise}
+    \end{cases}
+\]
+
+However, $h_\theta(x)$ is \emph{discontinuous} and \emph{not differentiable}.
+
+\subsubsection{Sigmoid Function}
+\emph{Maps a real number to a real number in the range [0, 1] in an S-shaped curve.}
+
+The sigmoid function
+$g(z) = \frac{1}{1 + e^{-z}}$.
+
+In logistic regression, our hypothesis is
+$h_\theta(x) = g(\theta^T x)$,
+and we want to perform gradient descent.
+
+\subsubsection{Cost Function}
+We cannot use sum of mean squared errors for our cost function because it is \emph{non-convex}.
+Gradient descent will converge at a local minima instead of a global minima, which is undesirable.\\[-0.2em]
+\[ \operatorname{Cost}(h_\theta(x), y) =
+    \begin{cases}
+        -\log h_\theta(x_i) & \text{if } y = 1 \\
+        -\log 1 - h_\theta(x_i) & \text{if } y = 0
+    \end{cases}
+\]
+
+This simplifies to the following:
+
+$\operatorname{Cost}(h_\theta(x), y) = -y \log h_\theta(x) - (1 - y) \log (1 - h_\theta(x))$
+
+Therefore, our overall cost function is:
+
+$J(\theta) = \frac{1}{m} \sum_{i=1}^{m} \operatorname{Cost}\left(h_\theta(x^{(i)}), \; y^{(i)}\right)$
+
+\subsubsection{Gradient Descent}
+Our gradient descent update rule is the exact same as in linear regression!
+
+$\theta_n := \theta_n - \alpha \frac{1}{m} \sum_{i=1}^{m} \left( h_\theta(x^{(i)}) - y^{(i)} \right) x_n^{(i)}$,
+
+where for the $n$-th feature, $\alpha$ is the learning rate, $m$ is the number of training examples, and
+$i$ is the index of the training example.
+
+$h_\theta(x) = \frac{1}{1 + e^{-\theta^Tx}}$, the hypothesis function, is the \emph{estimated probability} that $y = 1$ for the given
+input $x$.
+
+\subsubsection{Multi-class Classification}
+\emph{Binary classification for $y \in \{ 0, \: 1 \}$ works, but what if we have more than two classes?}
+
+In this case, we train a logistic classifier $h_\theta^{(i)}(x)$ for each class $i$ to predict that $y = i$.
+
+For each input $x$, we then predict the class $i$ with the highest probability:
+$y = \operatorname{argmax}_i h_\theta^{(i)}(x)$.
+This is known as \textbf{one-vs-all} or \textbf{one-vs-rest} classification.
