@@ -1,0 +1,63 @@
+\section{Neural Networks}
+
+A perceptron \textbf{calculates} the weighted sum of its inputs and passes it through a non-linear function:\\[-0.2em]
+\begin{align*}
+    \hat{y} = g \left(w_0 + \sum_{i=1}^{n} w_i \cdot x_i \right)
+\end{align*}
+
+where $g$ is some non-linear activation function, $x_0 = 1$, and $w_0$ is the bias term.
+
+Examples of non-linear activation functions are the sigmoid function, the tanh function,
+and the ReLU ($\max(0, x)$) function.
+
+\subsection{Perceptron Learning Algorithm}
+\begin{enumerate}
+    \item Initialize weights $w_i$ to zero or random small values.
+    \item Classify $\hat{y}^{(i)} = \operatorname{sgn}(w^Tx^{(i)})$ for each instance $i$ with features $x^{(i)}$.
+    \item Select one misclassified instance and update its weights: $w := w + \eta \cdot (y - \hat{y}) \cdot x$ where $\eta$ is the learning rate.
+    \item Iterate steps 2 to 3 until convergence where the classification error is less than some threshold,
+        or we reach a maximum number of iterations.
+\end{enumerate}
+
+The PLA algorithm is not robust as it can select and linear separator and is non-determistic.
+It also does not converge on non-linearly separable data.
+
+On the other hand, the Linear SVM is a perceptron of optimal stability which maximizes margin,
+and also converges on non-linearly separable data.
+
+\subsection{Gradient Descent}
+For $\hat{y} = g(f(x))$, $f(x) = w^Tx$, the update rule for gradient descent in a neural network is:
+
+$w_i := w_i - \eta \frac{d\epsilon}{dw_i} = w_i - \eta(\hat{y} - y) g'(f)x_i$
+
+The derivative of the sigmoid function $\sigma(x) = \frac{1}{1 + e^{-x}}$ is:
+
+$\sigma'(x) = \sigma(x) \cdot (1 - \sigma(x))$
+
+Generalizing this to the gradient descent update rule:
+
+$w \leftarrow w - \eta(\hat{y} - y) \hat{y} (1 - \hat{y}) x$
+
+\subsection{Multi-layer Perceptron}
+\emph{A neural network.}
+
+Suppose an $l$-th layer of a neural network has $m$ neurons.
+The layer before it is the $l - 1$-th layer, the layer after it is the $l + 1$-th layer, and so on.
+
+Among these $m$ neurons, let's consider the $j$-th neuron in the layer.
+It is indexed as $a_j^{[l]}$.
+
+Suppose the network is fully connected, such that this neuron is connected to all
+neurons in the previous layer.
+
+Then, it is connected to the neurons:
+
+$a_1^{[l-1]}, \dots, a_j^{[l-1]}, \dots, a_m^{[l-1]}$.
+
+It is also connected to the bias term $a_0^{[l - 1]} = 1$
+
+Each of these neurons are weighted by:
+
+$w_{j0}^{[l]}, w_{j1}^{[l]}, \dots, w_{jj}^{[l]}, \dots,  w_{jm}^{[l]}$
+
+Note that the superscript for the weights is $[l]$, not $[l-1]$.

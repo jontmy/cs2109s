@@ -43,10 +43,12 @@
 
 \setlength{\parindent}{0cm}
 \setlength{\parskip}{0.7em}
-\setlength{\abovedisplayskip}{0pt}
-\setlength{\belowdisplayskip}{0pt}
-\setlength{\abovedisplayshortskip}{0pt}
-\setlength{\belowdisplayshortskip}{0pt}
+
+% Vertical spacing around align environment.
+\setlength{\abovedisplayskip}{0.5em}
+\setlength{\belowdisplayskip}{0.5em}
+\setlength{\abovedisplayshortskip}{0.5em}
+\setlength{\belowdisplayshortskip}{0.5em}
 \setlength{\mathindent}{0pt} % no indent for all math (including the align) environemnts
 
 % \titlespacing\part{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
@@ -54,17 +56,8 @@
 \titlespacing\subsection{0pt}{4pt plus 2pt minus 2pt}{-1pt plus 2pt minus 2pt}
 \titlespacing\subsubsection{0pt}{3pt plus 2pt minus 2pt}{0pt plus 2pt minus 2pt}
 
-\usepackage{etoolbox}
-\newcommand{\zerodisplayskips}{%
-  \setlength{\abovedisplayskip}{0pt}%
-  \setlength{\belowdisplayskip}{0pt}%
-  \setlength{\abovedisplayshortskip}{0pt}%
-  \setlength{\belowdisplayshortskip}{0pt}}
-\appto{\normalsize}{\zerodisplayskips}
-\appto{\small}{\zerodisplayskips}
-\appto{\footnotesize}{\zerodisplayskips}
-
 % Remove vertical spacing around verbatim
+\usepackage{etoolbox}
 \makeatletter
 \preto{\@verbatim}{\topsep=-4pt \partopsep=0pt}
 \makeatother
@@ -87,6 +80,9 @@
 % Coloring text
 \usepackage{xcolor}
 
+% Multivariable differentiation
+\newcommand{\PartialDerivative}[2]{\frac{\partial #1}{\partial #2}}
+
 \title{\vspace{-1cm}\textbf{CS2109S \\[0.25em] Introduction to Artificial Intelligence \\ and Machine Learning} \\[2em] \Large AY2021/22 Semester 2 \\[1em]}
 \author{Notes by Jonathan Tay}
 \date{Last updated on \today}
@@ -107,7 +103,10 @@
         \input{04.tex}
         \input{05.tex}
         \input{classification.tex}
+        \input{bias-variance-tradeoff.tex}
         \input{regularization.tex}
         \input{support-vector-machines.tex}
+        \input{neural-networks.tex}
+        \input{backpropagation.tex}
     \end{multicols*}
 \end{document}

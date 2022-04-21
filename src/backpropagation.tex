@@ -1,0 +1,103 @@
+\section{Backpropagation}
+Let's first consider a single neuron (perceptron):
+\begin{align*}
+    & \hat{y} = F(w, x, b) = wx + b \\
+    & \varepsilon = L(\hat{y}, y)    
+\end{align*}
+Now, we want to find $\PartialDerivative{\varepsilon}{w}$ and $\PartialDerivative{\varepsilon}{b}$.
+
+We get the following gradients by applying the chain rule:
+\begin{align*}
+    & \PartialDerivative{\varepsilon}{w}
+    = \PartialDerivative{\varepsilon}{\hat{y}} \cdot \PartialDerivative{\hat{y}}{w} \\
+    & \PartialDerivative{\varepsilon}{b}
+    = \PartialDerivative{\varepsilon}{\hat{y}} \cdot \PartialDerivative{\hat{y}}{b}
+\end{align*}
+We don't have any downstream or upstream gradients, since we're working with a singular neuron.
+
+When we use a typical non-linear activation function $\sigma$ in $\hat{y} = \sigma(wx + b)$,
+we can split into two parts:
+\begin{align*}
+    & z = wx + b \\
+    & \hat{y} = \sigma(z)
+\end{align*}
+and then get the gradients by following the computation graph:
+\begin{align*}
+    & \PartialDerivative{\varepsilon}{w}
+    = \PartialDerivative{\varepsilon}{\hat{y}}
+    \cdot \PartialDerivative{\hat{y}}{z}
+    \cdot \PartialDerivative{z}{w} \\
+    & \PartialDerivative{\varepsilon}{b}
+    = \PartialDerivative{\varepsilon}{\hat{y}}
+    \cdot \PartialDerivative{\hat{y}}{z}
+    \cdot \PartialDerivative{z}{b}
+\end{align*}
+
+Now let's generalize it to a single layer. Suppose we have an input $x$ with $n$ features
+$x_1, x_2, \dots, x_n$, and each feature has its associated weight $w_i$.
+
+Therefore, $x$ is an $n \times 1$ vector and $w$ is a $d \times n$ matrix, where $d$
+is the \textbf{embedding dimension}.
+
+Let's add another layer $Z_1$ and consider the original layer as $\hat{Y}$:
+\begin{align*}
+    & z^{[1]} = (W^{[1]})^T x + b^{[1]} \\
+    & \hat{Y} = (W^{[2]})^T z^{[1]} + b^{[2]} \\
+    & \varepsilon = L(\hat{Y}, y) = \hat{Y} - Y
+\end{align*}
+
+Now, we need to compute two gradients: $\PartialDerivative{\varepsilon}{W^{[1]}}$ and $\PartialDerivative{\varepsilon}{W^{[2]}}$.\\
+$\varepsilon$ is a vector, and $W_i$ are matrices.
+Suppose we have some arbitary matrices $x$, $W_1$, and $W_2$ as follows:
+\begin{align*}
+    z_1 & = (W_1)^T x \\
+    & = \left[ \begin{matrix}
+        w^{[1]}_{11} & w^{[1]}_{21} \\
+        w^{[1]}_{12} & w^{[1]}_{22} \\
+    \end{matrix} \right] \left[
+        \begin{matrix}
+            x_1 \\
+            x_2 \\
+        \end{matrix}
+    \right] \\
+    & = \left[
+        \begin{matrix}
+            w^{[1]}_{11} x_1 + w^{[1]}_{12} x_2 \\
+            w^{[1]}_{21} x_1 + w^{[1]}_{22} x_2 \\
+        \end{matrix}
+    \right] \\
+    \hat{Y} & = (w^{[2]})^T z_1 \\
+    & = \left[ \begin{matrix}
+        w^{[2]}_{11} & w^{[2]}_{21} \\
+        w^{[2]}_{12} & w^{[2]}_{22} \\
+    \end{matrix} \right] \left[
+        \begin{matrix}
+            w^{[1]}_{11} x_1 + w^{[1]}_{12} x_2 \\
+            w^{[1]}_{21} x_1 + w^{[1]}_{22} x_2 \\
+        \end{matrix}
+    \right] \\
+    & = \left[
+        \begin{matrix}
+            w^{[2]}_{11} (w^{[1]}_{11} x_1 + w^{[1]}_{21} x_2) + w^{[2]}_{21} (w^{[1]}_{12} x_1 + w^{[1]}_{22} x_2) \\
+            w^{[2]}_{12} (w^{[1]}_{11} x_1 + w^{[1]}_{21} x_2) + w^{[2]}_{22} (w^{[1]}_{12} x_1 + w^{[1]}_{22} x_2) \\
+        \end{matrix}
+    \right]
+\end{align*}
+This results in a $2 \times 1$ vector $\hat{Y}$, which we pass to $L$:
+\begin{align*}
+    e_1 = & \; y_1 \\
+    & - w^{[2]}_{11} \left( w^{[1]}_{11} x^{[1]} + w^{[1]}_{21} x^{[2]} \right) \\
+    & - w^{[2]}_{12} \left( w^{[1]}_{12} x^{[1]} + w^{[1]}_{22} x^{[2]} \right) \\
+    e_2 = & \; y_2 \\
+    & - w^{[2]}_{12} \left( w^{[1]}_{11} x^{[1]} + w^{[1]}_{21} x^{[2]} \right) \\
+    & - w^{[2]}_{22} \left( w^{[1]}_{12} x^{[1]} + w^{[1]}_{22} x^{[2]} \right) \\
+    \implies \varepsilon = & \left[ \begin{matrix}
+        e_1 \\
+        e_2 \\
+    \end{matrix} \right] 
+\end{align*}
+This entire sequence is \textbf{forward propagation}. Now for backpropagation.
+
+Since our weight matrices are $2 \times 2$, we can calculate $4$ gradients each for
+both $\PartialDerivative{e_1}{w^{[2]}}$ and $\PartialDerivative{e_2}{w^{[2]}}$
+from $\PartialDerivative{\varepsilon}{w^{[2]}}$.

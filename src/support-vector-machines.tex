@@ -1,27 +1,25 @@
 \section{Support-vector Machine (SVM)}
 \emph{A technique to effeciently perform non-linear classification, in addition to linear classification.}
 
-The cost function for an SVM, $J(\theta) = $\\[-0.4em]
+The cost function for an SVM, $J(\theta) = $
 \begin{align*}
     \frac{1}{m} \sum_{i=1}^{m} \left(
         y^{(i)} \operatorname{cost}_1 \! \left( \theta^T x \right) +
         (1 - y^{(i)}) \operatorname{cost}_0 \! \left( \theta^T x \right) \right) +
         \frac{\lambda}{2m} \sum_{i=1}^{n} \theta_i^2
 \end{align*}
-
 where $\operatorname{cost}_1 \! \left( \theta^Tx \right)$ is some linear approximation
 of the non-linear $\log h_\theta$ term for values $\leq 1$, and 0 otherwise.
 
 $\operatorname{cost}_0 \! \left( \theta^Tx \right)$ is some linear approximation
 of the non-linear $\log h_\theta$ term for values $\geq -1$, and 0 otherwise.
 
-The hypothesis for an SVM is more clean-cut than logistic regression:\\[-0.2em]
+The hypothesis for an SVM is more clean-cut than logistic regression:
 \[ h_\theta(x) = \begin{cases}
     1 & \text{if } \theta^T x > 0 \\
     0 & \text{otherwise}
 \end{cases} \]
-
-Minimization of the cost function (where $C \approx \frac{1}{\lambda}$):\\[-0.2em]
+Minimization of the cost function (where $C \approx \frac{1}{\lambda}$):
 \begin{align*}
 \min_{\theta} C \left[\textcolor{red}{
     \sum_{i=1}^{m} y^{(i)} \operatorname{cost}_1 \! \left( \theta^T x \right) +
@@ -29,7 +27,6 @@ Minimization of the cost function (where $C \approx \frac{1}{\lambda}$):\\[-0.2e
     }\right]
 + \textcolor{blue}{\frac{1}{2} \sum_{i=1}^{n} \theta_i^2}
 \end{align*}
-
 Therefore, we simplify SVMs as $C\textcolor{red}{A} + \textcolor{blue}{B}$,
 while logistic regression is $\textcolor{red}{A} + \lambda \textcolor{blue}{B}$.
 They are relatively similar!
@@ -49,6 +46,74 @@ Ultimately, only the support vectors---the points closest to the separator---mat
 All the weights for non support vectors are zero.
 
 \subsection{Kernel Tricks}
-retnfsiwugirw
+\emph{A technique for enabling classification on non-linearly separable data.}
 
-effsfgrgsnj
+The \textbf{Gaussian kernel} defines the hypothesis differently:
+\begin{align*}
+    h_\theta(x) = \begin{cases}
+        1 & \text{if } \theta_0 + \theta_1 f_1 + \cdots + \theta_n f_n  \geq 0 \\
+        0 & \text{otherwise}
+    \end{cases}
+\end{align*}
+where $f_i = \operatorname{similarity}(x, l_i) = e^{-\frac{|x-l_i|^2}{2\sigma^2}}$,
+and training example $x$ and \textbf{landmark} $l_i$ are vectors.
+This finds the \quoted{distance} between the two vectors.
+
+This process does regression on a \emph{transformed space}.
+
+When $x$ is very near $l_i$, the distance $|x - l_i|^2 \to 0$, causing $f(x, l_i) \to 1$ due to the exponentiation.
+
+Likewise, when $x$ is far from $l_i$, the distance $|x - l_i|^2 \to \infty$, causing $f(x, l_i) \to e^{-\infty} = 0$.
+
+Every point $h_\theta(x)$ will then be a linear combination of the landmarks such that a hyperplane
+in a higher dimensional space separates included points from the excluded points.
+
+The SVM does this \quoted{slicing}, and the kernel does the \quoted{distortion}.
+
+\subsubsection{Bias-Variance Tradeoff}
+For classification problems, instead of computing a loss value, we can use misclassification error:
+\begin{align*}
+    & \operatorname{error}(h_\theta(x), y) = \begin{cases}
+        1 & \text{if } h_\theta(x) \leq 0.5 \land y = 1 \\
+        1 & \text{if } h_\theta(x) < 0.5 \land y = 0 \\
+        0 & \text{otherwise}
+    \end{cases} \\
+    & J_{\text{test}}(\theta) = \frac{1}{m_{\text{test}}} \sum_{i=1}^{m_{\text{test}}}
+    \operatorname{error}(h_\theta(x_{\text{test}}^{(i)}), y^{(i)})
+\end{align*}
+We can train multiple models and use cross-validation to
+choose the one with the lowest $J_{\text{cv}}(\theta)$.
+
+The formula for $J_{\text{cv}}(\theta)$ and $J_{\text{train}}(\theta)$ are the same
+as $J_{\text{test}}(\theta)$, but instead using different training examples $x$.
+
+We only use test set error $J_{\text{test}}(\theta)$ to assess the quality of the \emph{chosen}
+model, and use cross-validation error $J_{\text{cv}}(\theta)$ to \emph{choose} the model.
+
+This is because cross-validation may introduce a bias in the model, and we want
+the training examples in the test set to be unseen.
+
+\subsection{SVM with Kernels}
+
+A larger $C \approx \frac{1}{\lambda}$ value will yield lower bias an higher variance,
+while a smaller $C$ value will yield higher bias and lower variance.
+
+The $\sigma$ term determines the steepness of the \quoted{distortions} by the kernel.
+
+If $\sigma^2$ is large, they are gradual (higher bias, lower variance).
+If $\sigma^2$ is small, they are sharp (lower bias, higher variance).
+
+We will use all $m$ training examples as landmarks $l$. The $f$ vector comprises
+of similarity values between all training examples and each landmark:
+$f_m = \operatorname{similarity}(x, l^{(m)})$.
+
+The $\theta$ vector is has $m + 1$ values, where $\theta_0$ is the bias, and we want to
+minimize $\theta$ over the same function as in regularized logistic regression but
+with $f$ instead of $x$, and $n$ is replaced with $m$.
+
+Remember to apply feature scaling \emph{before} transformation with kernels!
+
+SVMs with Gaussian kernels should be used when $n$ is small and $m < 10$k,
+because each training example is used as a landmark.
+
+Otherwise, use logistic regression or SVMs without kernels (linear kernel).

@@ -29,7 +29,7 @@ the regularized normal equation can be solved even if $X^TX$ is not invertible
 as long as $\lambda > 0$!
 
 \subsection{Regularized Logistic Regression}
-The fully expanded cost function has the following form:\\[-0.2em]
+The fully expanded cost function has the following form:
 \begin{align*}
     J(\theta) = 
     -\frac{1}{m} \sum_{i=1}^{m} \left(
@@ -37,7 +37,6 @@ The fully expanded cost function has the following form:\\[-0.2em]
         (1 - y^{(i)}) \log\left(1 - h_\theta(x^{(i)}) \right)
     \right)
 \end{align*}
-
 Regularization appends the following to the back:
 
 $\dots \textcolor{red}{+ \frac{\lambda}{2m} \sum_{i=1}^{n} \theta_i^2}$
