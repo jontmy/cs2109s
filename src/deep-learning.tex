@@ -1,0 +1,101 @@
+\section{Deep Learning}
+A neural network with many layers is said to be a \textbf{deep network},
+while one with few layers is a \textbf{shallow network}.
+
+In deep learning, we want to automate feature extraction and classification.
+
+\subsection{Recurrent Neural Networks}
+\emph{Exploiting tempooral structure.}
+
+\subsection{Convolutional Neural Networks}
+\emph{Exploiting spatial structure in images.}
+
+Images are represented as 2D matrices.
+
+We could naively use pixel value vectors, butthat would lose information on spatial structure, where pixels are more related the
+closer they are to each other.
+
+\subsubsection{Convolution}
+\emph{Consider groups or pixels at a time rather than individual pixels.}
+
+We employ a \textbf{kernel} to convolve with the image.
+This is done via a sliding window over the image, multiplying the window and kernel
+elementwise and summing to get a \textbf{feature map}.
+
+\textbf{Padding} mitigates pixel loss around the edge by surrounding the image with
+a border of zeros.
+
+\textbf{Stride} controls the distance between adjacent windows to speed up the
+computation of feature maps.
+
+For an image of dimensions $W \times H$, the dimensions of the feature map are:
+\begin{align*}
+    \text{width} = \lfloor \frac{W - K + 2*P}{S} \rfloor + 1 \\
+    \text{height} = \lfloor \frac{H - K + 2*P}{S} \rfloor + 1
+\end{align*}
+where $K$ is the size of the kernel, $P$ is the padding size, and $S$ is the stride.
+
+A linear layer had a 2D weight matrix $\mathbf{W^{[l]}}$ and a non-linear activation function $g^{[l]}$:
+\begin{align*}
+    \mathbf{a}^{[l]} = g^{[l]} \left(
+        (\mathbf{W}^{[l]})^T \mathbf{a}^{[l-1]}
+    \right)
+\end{align*}
+However, in a convolution layer, both the weight and activation matrices are 3D,
+since we're concatenating the feature maps for the activation:
+\begin{align*}
+    \mathbf{a}^{[l]} = g^{[l]} \left(
+        \mathbf{W}^{[l]} * \mathbf{A}^{[l-1]}
+    \right)
+\end{align*}
+Each layer has multiple kernels, and each kernel output is a 2D matrix of a feature map.
+
+The kernel input is a 3D matrix of feature maps, where each depth is a different kernel,
+akin to "stacking filters".
+Thus, each layer is a 3D matrix.
+
+\subsubsection{Pooling}
+\emph{Downsamples feature maps to help train later kernels in
+detecting higher-level features.}
+
+This reduces dimensionality via aggregation methods
+like max pooling, where the largest value in each window is selected.
+
+\textbf{Softmax} is used to normalize the output of the last layer.
+It exponentiates every term and divides it by the sum of all exponentiated terms:
+\begin{align*}
+    \operatorname{softmax}\left(
+        \begin{bmatrix*}
+            x_1 \\ x_2 \\ x_3
+        \end{bmatrix*}
+    \right) = \begin{bmatrix*}
+        \frac{e^{x_1}}{e^{x_1} + e^{x_2} + e^{x_3}} \\
+        \frac{e^{x_2}}{e^{x_1} + e^{x_2} + e^{x_3}} \\
+        \frac{e^{x_3}}{e^{x_1} + e^{x_2} + e^{x_3}}
+    \end{bmatrix*}
+\end{align*}
+
+\subsubsection{Regularization}
+We can employ \textbf{dropout} to prevent overfitting by randomly setting
+some activations to 0.
+
+Alternatively, \textbf{early stopping} prevents overfitting by stopping training
+when the loss has stopped decreasing.
+
+\subsubsection{Other Problems}
+\textbf{Vanishing gradients} is a problem in backpropagation where the gradients
+are too small or even zero such that multiplying gradients doesn't change weights.
+
+This is why we avoid the use of the sigmoid function which saturates at 0 and 1
+for very large or small values.
+
+\textbf{Exploding gradients} causes gradients to keep getting larger and larger,
+which causes gradient descent to diverge.
+
+We mitigate these by:
+\begin{enumerate}
+    \item Proper weight initialization.
+    \item Using non-saturating activation functions such as ReLU.
+    \item Batch normalization, c.f., feature scaling.
+    \item Gradient clipping.
+\end{enumerate}

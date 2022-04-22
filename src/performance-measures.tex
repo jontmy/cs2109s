@@ -1,0 +1,65 @@
+\subsection{Performance Measures}
+We consider a classification correct when a prediction $\hat{y}$ is equal to the actual label $y$:
+i.e., $\operatorname{Correct} = [\hat{y}] = y$.
+
+We can define \textbf{accuracy} as the average correctness across a dataset with $m$ examples:
+\begin{align*}
+    A = \frac{1}{m} \sum_{i=1}^m [\hat{y}_i = y_i]
+\end{align*}
+where $\hat{y}_j = M(x_j)$ is the predicted label from model $M$ for the $j$-th $x_j$,
+and $y_j$ is the \textbf{ground truth} value of the $j^{th}$ example.
+
+\subsubsection{Confusion Matrix}
+\emph{Visualizing the performance of a machine learning model.}
+
+For binary confusion, i.e., positive and negative labels, we can use the confusion matrix:
+\begin{align*}
+    \begin{bmatrix}
+        \text{true positive, TP} & \text{false positive, FP} \\
+        \text{false negative, FN} & \text{true negative, TN} \\
+    \end{bmatrix}
+\end{align*}
+The columns represent the \emph{actual label}, while the rows represent the \emph{predicted label}.
+
+Confusion matrices are $N * N$, where $N$ is the number of labels.
+
+We can calculate accuracy as follows:
+\begin{align*}
+    A = \frac{TP + TN}{TP + TN + FP + FN}
+\end{align*}
+False positives are also known as \textbf{Type I error},
+and false negatives as \textbf{Type II error}.
+
+\textbf{Precision} is the fraction of selected items which are relevant:
+\begin{align*}
+    P = \frac{TP}{TP + FP}
+\end{align*}
+We want to maximize precision when false positives are costly, e.g., spam.
+
+\textbf{Recall} is the fraction of relevant items which are selected:
+\begin{align*}
+    R = \frac{TP}{TP + FN}
+\end{align*}
+We want to maximize recall when false negatives are dangerous, e.g., cancer prediction.
+
+A more robust measure of accuracy is the $\mathbf{F_1}$ \textbf{score}:
+\begin{align*}
+    F_1 = \left( \frac{P^{-1} + R^{-1}}{2} \right)^{-1} =
+        \frac{2\:TP}{2\:TP + FP + FN}
+\end{align*}
+It is less sensitive to extreme values, and considers the numerators of $P$ and $R$ as the same,
+comparing their denominators instead.
+
+\subsubsection{Receiver Operator Characteristic (ROC) Curve}
+\emph{Visualizing the performance of a binary classifier as its discrimination threshold is varied.}
+
+An ROC curve is created by plotting the true positive rate (TPR) against the
+false positive rate (FPR) at various threshold values $\pi$.
+
+Random chance is a diagonal line increasing linearly from the origin. A model is more accurate
+than random chance if its ROC curve is above this random line.
+
+We can use the area under the curve (AOC) of the ROC as a more concise metric for clearer comparisons.
+
+An AOC value $> 0.5$ indicates that the model is more accurate than random chance,
+and AOC $\approx 1$ indicates that the model is very accurate.

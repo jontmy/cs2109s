@@ -19,14 +19,14 @@ The compiled LaTeX document can be found [here](https://github.com/jontmy/nus-cs
 | 3        | Informed Search                            | ✓          |
 | 4        | Adversarial Search                         | ✓          |
 | 5        | Introduction to Machine Learning           | ✓          |
-| 6        | Multi-variable Linear Regression           |            |
+| 6        | Classification                             | ✓          |
 | 7        | —                                          |            |
-| 8        | Classification: Logistic Regression        |            |
-| 9        | Introduction to Neural Networks            |            |
-| 10       | Back Propagation                           |            |
-| 11       | More Neural Networks                       |            |
-| 12       | Unsupervised Learning                      |            |
-| 13       | AI and Ethics                              |            |
+| 8        | Support Vector Machines                    | ✓          |
+| 9        | Introduction to Neural Networks            | ✓          |
+| 10       | Back Propagation                           | ✓          |
+| 11       | Introduction to Deep Learning              | ✓          |
+| 12       | Unsupervised Learning                      | ✓          |
+| 13       | AI and Ethics                              | ✓          |
 
 ## Additional Resources ##
 

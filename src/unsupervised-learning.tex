@@ -1,0 +1,118 @@
+\section{Unsupervised Learning}
+\emph{Learning from data without labels.}
+
+We want our model to derive structure from data without prior knowledge of the effect of variables.
+
+The model also does not receive feedback based on prediction results, since we have little or
+no idea what results should look like.
+
+\subsection{k-means Clustering}
+\emph{Unsupervised classification.}
+
+We have $m$ training data points $x^{(i)}, x^{(2)}, \dots, x^{(m)}$.
+We want to classify these data points into $k$ clusters.
+
+To do so, we initialize $k$ centroids $\mu_1, \mu_2, \dots, \mu_k$ to random points in the data.
+
+We use $c^{(i)}$ to denote the index of the cluster centroid closest to $x^{(i)}$ such that
+$1 \leq c^{(i)} \leq k$.
+
+We use the mean squared error as our cost function:
+\begin{align*}
+    J(c^{(1)}, \dots, c^{(m)}, \mu_1, \dots, \mu_k) = \frac{1}{m} \sum_{i=1}^m \left( x^{(i)} - \mu^{(i)} \right)^2
+\end{align*}
+Then, we repeat the following until convergence (which is guaranteed):
+\begin{itemize}
+    \item For each data point, find the closest centroid $\mu^{(i)}$ and assign it to the cluster $c^{(i)}$.
+    \item For each cluster, find the new centroid $\mu^{(i)}$ by taking the mean of all the data points in the cluster.
+\end{itemize}
+
+There are many possible local optima that $k$-means will converge on, so we try multiple
+random initializations and choose the one that minimizes the cost function.
+
+$k$-medoids is similar to $k$-means, but for each cluster, we instead pick the data point
+with minimum average distance to every other point as the centroid.
+This allows the final centroids to be more interpretable.
+
+There are two ways to pick $k$.
+
+The \textbf{elbow method} plots the total loss $J$ against a varying number of clusters $k$ and
+picking the $k$ value at the inflection point.
+
+More clusters will naturally improve the fit, where loss decreases sharply up to $k$ and then
+increasing only slowly beyond $k$ due to over-fitting.
+
+The \textbf{business need} method simply picks $k$ by the downstream need for a number of clusters.
+
+\subsection{Heirarchical Clustering}
+
+Initially, we treat every data point as a one-point cluster.
+
+Then, we merge pairs of points that are nearest to each other and merge the two clusters.
+
+We repeat until all data points are in one cluster.
+
+We get a tree of clusters called a \textbf{dendrogram}, and we can cut off at some
+threshold, or at a certain number of clusters.
+
+However, heirarchical clustering is impractical for extremely large datasets due to its
+high space and time complexity.
+
+\subsection{Challenges}
+In general, unsupervised learning has higher computational complexity,
+risk inaccurate results, take longer to train, need human validation of results,
+and lack transparency in clustering.
+
+\subsection{Principal Component Analysis}
+\emph{Dimensionality reduction.}
+
+Data with many features have high dimension, which is more computationally expensive to work with.
+
+PCA allows us to extract only the relevant features in a training samples in a data set by
+reducing the dimension from $n$ to $k$ such that $x^{(i)} \in \mathbb{R}^n \mapsto z^{(i)} \in \mathbb{R}^k$.
+
+We then recover the original data by projecting the reduced data back to the original space
+$z^{(i)} \in \mathbb{R}^k \mapsto x^{(i)}_{\text{approx}} \in \mathbb{R}^n$.
+
+Therefore, we need to pick a value for $k$. We want to find a minimum value of $k$ such that
+we retain 99\% of the variance in the data.
+
+Mathematically, this is represented by the following inequality:
+\begin{align*}
+    & \frac{\sum_{i=1}^{m} || x^{(i)} - x^{(i)}_{\text{approx}} ||^2}{\sum_{i=1}^{m} || x^{(i)} ||^2}
+    = 1 - \frac{\sum_{i=1}^{k} \sigma_i}{\sum_{i=1}^{n} \sigma_i}
+    \leq 0.01 \\[0.5em]
+    & \implies \frac{\sum_{i=1}^{k} \sigma_i}{\sum_{i=1}^{n} \sigma_i}
+    \geq 0.99
+\end{align*}
+
+In words, this means pick the first $k$ values of $\sigma$ such that they account for 
+99\% of the variance, i.e., sum of all the $\sigma$ values.
+
+We get the $\sigma$ values from \code{s} after calling \code{svd} on the data matrix $X$
+which performs \textbf{singular value decomposition}:
+
+\code{U, s, VT = svd(X)}
+
+\code{U} and \code{VT} are both $n \times n$ matrices.
+
+\code{s} is typically an $n \times n$ diagonal matrix of $\sigma$ values, but in
+code it is represented as a $1 \times n$ array such that $s[i] = \sigma_i$.
+
+These $\sigma$ values are sorted in descending order, and can be thought of as corresponding
+to \quoted{the importance of each feature} in the data.
+
+We select the first $k$ values of $\sigma$ to get the $k$ principal components:
+
+$\mathbf{U}_{\text{reduce}} \equiv$ \code{Ur = U[:, :k]}
+
+With this, we can apply PCA \emph{only to the training set} and not the test and cross-validation sets.
+
+Only once we get $\mathbf{U}_\text{reduce}^T$ can we apply it to the test and cross-validation sets:
+\begin{align*}
+    & \mathbf{Z} = \mathbf{U}_\text{reduce} \; \mathbf{X} \\
+    & \mathbf{X}_{\text{approx}} = \mathbf{U}_\text{reduce}^T \; \mathbf{Z}
+\end{align*}
+
+PCA is often used for compression and visualization of high dimensional data.
+Do not use PCA to prevent overfitting; use regularization instead.

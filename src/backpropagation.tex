@@ -1,4 +1,4 @@
-\section{Backpropagation}
+\subsection{Backpropagation}
 Let's first consider a single neuron (perceptron):
 \begin{align*}
     & \hat{y} = F(w, x, b) = wx + b \\
@@ -100,4 +100,4 @@ This entire sequence is \textbf{forward propagation}. Now for backpropagation.
 
 Since our weight matrices are $2 \times 2$, we can calculate $4$ gradients each for
 both $\PartialDerivative{e_1}{w^{[2]}}$ and $\PartialDerivative{e_2}{w^{[2]}}$
-from $\PartialDerivative{\varepsilon}{w^{[2]}}$.
+from $\PartialDerivative{\varepsilon}{w^{[2]}}$ using the chain rule.
