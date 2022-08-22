@@ -1,0 +1,88 @@
+\section{Miscellany}
+\emph{Things of note and examples from tutorials.}
+
+\subsection{Forward Propagation}
+Given a fully connected neural network with one hidden layer,
+a 2D input $x$ with two neurons, and two output neurons $\hat{y}$, calculate
+the values after forward propagation including biases and using the ReLU function.
+
+We are given the weights $\mathbf{W}^{[1]}$ and $\mathbf{W}^{[2]}$
+and the input $\mathbf{X}$.
+\begin{align*}
+    a^{[1]} &= \operatorname{ReLU}\left( \left(\mathbf{W}^{[1]}\right)^T \mathbf{X} \right)\\
+    y^{[2]} &= \operatorname{ReLU}\left( \left(\mathbf{W}^{[2]}\right)^T a^{[1]} \right)
+\end{align*}
+
+\subsection{Calculating Dimensions}
+In a regular neural network without convolution, given an $w \times h$ greyscale image,
+fill in the dimensions of the input and output tensors as well as the weight matrices.
+
+After flattening our input image, we get input matrix of size $w \cdot h \times 1$.
+Given that we want our output dimension to be $k \times 1$, the weight matrix should
+have dimensions $k \times w \cdot h$.
+
+Repeat for each subsequent layer.
+
+\subsection{Backpropagation}
+Given the following network,
+\begin{align*}
+    & f^{[1]} = \left( \mathbf{W}^{[1]} \right) ^T \mathbf{X} \\
+    & \hat{Y} = g^{[1]} \left( f^{[1]} \right) \\
+    & \varepsilon = - \alpha \left( Y \cdot \log \hat{Y} \right) - \beta \left( (1 - Y) \log (1 - \hat{Y}) \right)
+\end{align*} where
+\begin{align*}
+    & \mathbf{W}^{[1]} = [W_{00}^{[1]}, W_{01}^{[1]}, W_{02}^{[1]}, W_{03}^{[1]}] \\
+    & \mathbf{X}_{0i} = [1, X_{1i}, X_{2i}, X_{3i}] \\
+    & g^{[1]} = \sigma(s) = \frac{1}{1 + e^{-s}}
+\end{align*} find
+$\PartialDerivative{\varepsilon}{\hat{Y}}, \PartialDerivative{\varepsilon}{f^{[1]}},
+\PartialDerivative{\varepsilon}{W_{02}^{[1]}}$ using the chain rule.
+\begin{align*}
+    \PartialDerivative{\varepsilon}{\hat{Y}} 
+        &= -\frac{\alpha Y}{\hat{Y}}
+        + \frac{\beta(1 - Y)}{1 - \hat{Y}}
+\end{align*}
+
+\subsection{Decision Trees}
+First calculate the entropy for the entire data set:
+\begin{align*}
+    I \left( \frac{p}{m}, \frac{n}{m} \right)
+    = -\frac{p}{m} \log_2 \frac{p}{m} - \frac{n}{m} \log_2 \frac{n}{m}
+\end{align*}
+where $m$ is the number of examples in the data set,
+$p$ is the number of positive examples, and $n$ is the number of negative examples.
+
+Then, for each attribute $A$, calculate $\operatorname{remainder}(A)$.
+If the attribute is binary, i.e., yes/no, true/false, $y$/$n$:
+\begin{align*}
+    & \operatorname{remainder}(A) \\
+    & = \frac{y_A}{m} \cdot I \left( \frac{y_A \cap p}{y_A}, \frac{y_A \cap n}{y_A} \right)
+    + \frac{n_A}{m} \cdot I \left( \frac{n_A \cap p}{n_A}, \frac{n_A \cap n}{n_A} \right) \\
+    & = \frac{y_A}{m} \left( 
+            -\frac{y_A \cap p}{y_A} \log_2 \frac{y_A \cap p}{y_A}, 
+            -\frac{y_A \cap n}{y_A} \log_2 \frac{y_A \cap n}{y_A}
+        \right) \\
+    & + \frac{n_A}{m} \left( 
+            -\frac{n_A \cap p}{n_A} \log_2 \frac{n_A \cap p}{n_A}, 
+            -\frac{n_A \cap n}{n_A} \log_2 \frac{n_A \cap n}{n_A}
+        \right)
+\end{align*}
+where $y_A$ is the number of examples with a \quoted{yes} for attribute $A$,
+and $n_A$ is the number of examples with a \quoted{no} for attribute $A$.
+
+With the remainder for the attribute, we can calculate the information gain by splitting
+on that attribute:
+\begin{align*}
+    IG(A) = I \left( \frac{p}{m}, \frac{n}{m} \right) - \operatorname{remainder}(A)
+\end{align*}
+
+When we have all the information gain values for every attribute, we choose to split
+on the attribute with the highest information gain.
+
+If this is the first split, we consider that attribute as the \textbf{root node}.
+
+Now, we divide the data set into two, one for the \quoted{yes} for the attribute,
+and the other for the \quoted{no} of the same attribute we split on.
+
+We repeat the the previous three calculation steps to determine the next attribute
+to split on, and so on, until we exhaust all attributes.
